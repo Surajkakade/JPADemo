@@ -1,0 +1,631 @@
+HTTP response is observable
+httpModule till Ang4
+Above that httpClientModule
+
+1.
+templateUrl point to html file
+template to write inline html (use ` for multiple lines)
+
+2.
+styleUrl points to css file
+styles for inline css (backtick ` to write multiple lines)
+
+
+//example
+@Component({
+selector: 'app-root',
+template: `<div>
+			Inline HTML
+		</div>`,
+styles: [`
+	div {
+	color : red;
+}     `]     })
+
+ng new projectName
+
+ng g c componentName
+
+ng g s serviceName
+
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Test</title>
+</head>
+<body>
+    <app-emp-details></app-emp-details>
+    <app-emp-list></app-emp-list>
+  <h1>"Hello"</h1>
+    {{ title }} app is running!
+   
+    <div>
+    <button (click)="onClick()">         {{ analog ? "Analog" : "Digital" }}    </button>
+    </div>
+
+    <div>
+    <input #myIn type="text">
+    <button (click)="logMessage(myIn.value)">Show</button>
+    </div>
+
+
+    <div>
+      <input [(ngModel)]= "inputEntered" type="text" >
+      {{ inputEntered }}
+    </div>
+
+    
+
+
+    <div><h1>For Parent Ops</h1>
+      <app-child [parentToChild]="parentToChildMsg"></app-child>
+    
+    </div>
+
+    <h2>{{98 | currency: 'INR' }}</h2>
+    <h2>{{98 | percent }}</h2>
+    <h2>{{ date }}</h2>
+    <h2>{{ date | date:'short' }}</h2>
+    <h2>{{ date | date:'shortDate'}}</h2>
+    <h2>{{ date | date:'longDate'}}</h2>
+
+
+
+
+    <!-- if directive -->
+    <h1 *ngIf="bool; else elseBlockRef"> </h1>
+    
+    <div *ngIf="bool; then thenBlockRef; else elseBlockRef"></div>
+   
+    <ng-template #thenBlockRef>
+      <h2> then block called</h2>
+    </ng-template>    
+    
+    <ng-template #elseBlockRef>
+      <h2> else block called</h2>
+    </ng-template>
+
+
+    <!-- switch directive -->
+    
+    <div [ngSwitch]="color">
+      <div *ngSwitchCase= " 'red' "> you chose red</div>
+      <div *ngSwitchCase= " 'blue' "> you chose blue</div>
+      <div *ngSwitchCase= " 'yellow' "> you chose yellow</div>
+      <div *ngSwitchDefault> Chose again</div>
+    </div>
+
+    <!-- for directive -->
+
+    <div *ngFor="let name of nameArray; index as i; first as f; odd as o">
+      <h3>{{ i }} {{ name }} {{f}} {{o}}</h3>
+    </div>
+    
+    <h1>{{ message }}</h1>
+    <app-child (childEvent)="message" [parentData]="parent"></app-child>
+
+
+    <router-outlet></router-outlet>
+</body>
+</html>
+
+
+
+3 ways to use component's selector
+
+#1 As a custom tag
+@Component({
+selector:'app-root',
+templateUrl:'./app.comp.html',
+styleUrl: ['./app.comp.css'}
+})
+
+Usage: <app-root> </app-root>
+
+#2 As a class
+@Component({
+selector: '.app-test',
+templateUrl: './app.comp.html',
+styelUrl: ['./app.comp.css'
+})
+
+Usage: <div class= "app-test"></div> 
+
+#3 As a attribute
+@Component({
+selector: ['app-test'],
+templateUrl: './app.comp.html',
+styelUrl: ['./app.comp.css'
+})
+
+Usage: <div app-test></div> 
+
+interpolation {{ var }}
+
+usage: evaluates, operates and concatenates expression
+Limitations - assignment and global js variable access not allowed (eg-> windows.location.href and all)
+
+
+//syntax4
+<h2> {{ 2+4 }} </h2> // returns 6
+<h2> {{" Hello " + name }} </h2>  //hello name (name is var)
+<h2> {{ name.upperCase() }}  </h2> //any js predefined methods
+<h2> print() </h2> // custom class methods
+
+Property Binding
+
+#syntax [] or bind-
+
+<input [disabled]="isDisabled" [id]= {{ myid }} type="text" value="suraj">
+<input  bind-id= {{ myid2}} type="text" value="male">
+
+export class AppComp implements onInit(){
+
+public isDisabled=false;
+public myid="testId";'
+public myid2="testId";
+}
+
+
+
+CSS Class binding 
+template: ` <h1 [class]="successClass"> Suraj </h1> //1 var
+		<h1 class="text-success"> Suraj </h1> //1 css
+<h2 [ngClass]="messageObj"> Suraj </h2>`, //for 2 styles
+styles:[
+.text-success{
+ color: green; }
+
+.text-fail {
+color:red; }
+
+.text-style{
+font-style: italic;
+} ]
+
+
+export class implements onInit(){
+public messageObj= { 
+	"text-success"=true;
+	"text-fail"=fail;
+	"text-styles"=true;
+	} //true classes will be applied (green and italic here)
+}
+
+
+#Style Bindings
+
+<h2 [styles.color]=" 'red' "> Suraj </h2> //for single style
+<h2 [ngStyle]=" 'styleObj' "> Suraj </h2> //for multiple styles
+
+class->
+public styleObj= { 
+	color: 'red',
+	fontStyle: 'italic'
+	}
+
+#Event /Data binding
+
+<button (click) ="onPress()" > submit</button>
+<button (click) ="onClick($event)" > submit</button>
+<button (click) ="msg= ' welcome' " > submit</button>
+
+export class AppComp impl onInit{
+msg=" "; 
+
+onPress(){
+console.log("success for onPress");
+this.msg="success for onPress" 
+}
+
+onClick(event){
+this.msg=event.type; }
+
+
+
+Template binding #varName
+
+
+    <input #myIn type="text">
+    <button (click)="logMessage(myIn.value)">Show</button>
+
+  logMessage(value : any){
+    console.log(value);
+    return value;
+  }
+
+
+ 
+Two way binding [(ngModel)]
+
+    <input [(ngModel)] type="text" >
+    {{ inputEntered }} //normal variabl
+	
+	
+	<!-- if directive -->
+    <h1 *ngIf="bool; else elseBlockRef"> </h1>
+    
+    <div *ngIf="bool; then thenBlockRef; else elseBlockRef"></div>
+   
+    <ng-template #thenBlockRef>
+      <h2> then block called</h2>
+    </ng-template>    
+    
+    <ng-template #elseBlockRef>
+      <h2> else block called</h2>
+    </ng-template>
+
+
+   
+    <!-- for directive -->
+    <div *ngFor="let name of nameArray; index as i; first as f; odd as o">
+      <h3>{{ i }} {{ name }} {{f}} {{o}}</h3>
+    </div>
+
+
+    <!-- switch directive -->
+    
+    <div [ngSwitch]="color">
+      <div *ngSwitchCase= " 'red' "> you chose red</div>
+      <div *ngSwitchCase= " 'blue' "> you chose blue</div>
+      <div *ngSwitchCase= " 'yellow' "> you chose yellow</div>
+      <div *ngSwitchDefault> Chose again</div>
+    </div>
+
+
+
+    <h2>{{98 | currency: 'INR' }}</h2>a
+    <h2>{{98 | percent }}</h2>
+    <h2>{{ date }}</h2>
+    <h2>{{ date | date:'short' }}</h2>
+    <h2>{{ date | date:'shortDate'}}</h2>
+    <h2>{{ date | date:'longDate'}}</h2>m
+	
+		1. Defining service class - ng g s serviceName & object creation where we gonna use, 
+	@Injectable() public class ServiceClassName
+	2. Register with injector- register in AppModule & providers: [EmployeeService] & import it
+	3. declare dependency where we need to use -
+	public employee=[];
+	constructor(private localEmpService : EmployeeService) { }
+	
+	ngOnInit(){
+	this.employee=this.localEmpService.getEmployees();
+	}
+
+import { Injectable } from '@angular/core';
+@Injectable({
+  providedIn: 'root'
+})
+export class EmpServiceService {
+  constructor() { }
+  getEmployees(){
+    return [{"id":1, "name":"Pranali", "desig": "Tester"},
+    {"id":2, "name":"Suraj", "desig": "Developer" }
+    
+    ];
+  }
+}
+
+
+
+import { Component, OnInit } from '@angular/core';
+import { EmpServiceService } from '../emp-service.service';
+@Component({
+  selector: 'app-emp-details',
+  templateUrl: './emp-details.component.html',
+  styleUrls: ['./emp-details.component.css']
+})
+export class EmpDetailsComponent implements OnInit {
+  public employee : any[] = [];
+  constructor(private localEmp: EmpServiceService) { }
+  ngOnInit() {
+    this.employee = this.localEmp.getEmployees();
+  }
+}
+
+
+<p>emp-details works!</p>
+<ul *ngFor="let emp of employee"> 
+    <h3> {{emp.id }} {{ emp.name }} {{ emp.desig }}</h3>
+</ul>
+
+
+
+
+HTTP get request from ServiceClass
+Receive the observable and cast it into emp array (or in however format we wanna use) // create interface
+Subscribe to observable from components who needs response data
+Assign emp array to local variable
+
+In the app.module import HttpclientModule from common/http and in imports
+
+Importing HttpClientModule in app.module
+In service class 
+private url: string = "/assets/data/employees.json";
+  constructor(private http: HttpClient) { }
+  getEmployees(){
+    return this.http.get(this.url);
+  }
+
+
+Casting
+import { IEmployee } from './employee';
+import { Observable } from 'rxjs';
+
+export interface IEmployee {
+    id: number,
+    name: string,
+    desig: string
+}
+
+In the service class obvio
+  getEmployees():Observable<IEmployee[]>{
+    return this.http.get<IEmployee[]>(this.url);
+  }
+
+
+
+Calling and subscribing
+  ngOnInit() {
+   this.localEmp.getEmployees().subscribe(data => this.employee=data)
+  }
+
+
+----------------------------------------------------------------------------------------------------
+ Angular 8 afterwards
+In the service class
+
+import { IEmployee } from './employee';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators'
+
+
+  getEmployees():Observable<IEmployee[]>{
+    return this.http.get<IEmployee[]>(this.url)
+    .pipe(catchError(this.errorHandler)); //errorHandler is a method
+    }
+    errorHandler(error : HttpErrorResponse){ 
+      return throwError(error.message || "Server error")
+    }
+
+
+For which exception to be caught
+  ngOnInit() {
+   this.localEmp.getEmployees()
+   .subscribe(data => this.employee=data, error => this.errorMsg= error);   
+  }
+
+
+<h3>{{ errorMsg }}</h3> // displaying error
+ 
+
+
+
+
+ng new projname --routing
+
+	1. base tag in index.html <head><base href="/"><base></head>
+	2. create app-routing.module.ts 
+	3. import AppRoutingModule in app.module.ts
+	4. configure paths in app-routing
+	const routes: Routes = [
+	 {path: 'details', component: EmpDetailsComponent} ,
+	 {path: 'list', component: EmpListComponent} 
+	];
+	5. 
+<router-outlet></router-outlet>
+
+
+
+
+Page not found
+
+
+const routes: Routes = [
+  {path: '', redirectTo:'/details', pathMatch:'full'},
+ {path: 'details', component: EmpDetailsComponent} ,
+ {path: 'list', component: EmpListComponent},
+ {path: '**', component: PageNotFoundComponent}
+
+Combined routes
+
+import { AppRoutingModule, rotuingComponents } from './app-routing.module';
+
+In routing.ts
+export const rotuingComponents=[EmpDetailsComponent, EmpListComponent, PageNotFoundComponent ];
+
+Changing API name or relative navigation
+1.
+  onSelect(l: any){
+    this.router.navigate( ['/list', l.id ] );
+    this.router.navigate([l.id, {relativeTo: this.aRoute}]);
+  }
+
+2.
+
+ goBack(){
+    let selectedId=this.listId ? this.listId : null;
+    //this.router.navigate(['list', {id: selectedId}]);
+    this.router.navigate(['../',{id: selectedId}, {relativeTo: this.aRoute}]) ;
+  }
+
+
+
+Route parameters
+
+
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+@Component({
+  selector: 'app-shitty-list',
+  templateUrl: './shitty-list.component.html',
+  styleUrls: ['./shitty-list.component.css']
+})
+export class ShittyListComponent implements OnInit {
+public listId:any ;
+list= [
+  {"id":1, "name": "Angular"},
+  {"id":2, "name": "React"},
+  {"id":3, "name": "Node"}    
+];
+  constructor(private router: Router) { }
+  ngOnInit(): void {
+  }
+  onSelect(l: any){
+    this.router.navigate( ['/list', l.id ] );
+  }
+}
+
+
+<p>shitty-list works!</p>
+<h3> id= {{ listId}}</h3>
+<ul class="items">
+    <li (click)="onSelect(l)" *ngFor="let l of list"> 
+       <span class="badge">  {{ l.id}} </span> {{ l.name}}
+    </li>
+</ul>
+
+
+
+
+
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute} from '@angular/router';
+@Component({
+  selector: 'app-list',
+  template: `
+    <p>
+      list works! id= {{ listId }}
+    </p>
+  `,
+  styles: [
+  ]
+})
+export class ListComponent implements OnInit {
+  public listId: any;
+  constructor(private router: ActivatedRoute) { }
+  ngOnInit(): void {
+    let id=this.router.snapshot.paramMap.get('id');
+    this.listId=id;
+  }
+
+
+}
+
+HTML attributes is to initialize element and directive state.
+
+When you write a data binding, you're dealing exclusively with the DOM properties and events of the target object.
+
+The HTML attribute value specifies the initial value; the DOM value property is the current value.
+
+• Use [] to bind from source to view.
+• Use () to bind from view to source.
+• Use [()] to bind in a two way sequence of view to source to view
+
+ Angular Interpolation / String Interpolation, Property Binding, and Event Binding are the example of one-way databinding.
+
+Two way binding -   [(ngModel)] = "[property of your component]"  
+
+formsModule is needed 
+
+name : string  = "suraj";
+
+<h2>Two-way Binding Example</h2>    
+   <input [(ngModel)]="name" /> <br/><br/>    
+<p> {{name}} </p> 
+
+
+
+<form #loginForm ="ngForm" (ngSubmit)="show(loginForm.values)" >
+<input type="text" name="username" (ngModel)>
+<input type="text" name="pwd" (ngModel)> 
+</form>
+
+
+username= suraj
+pwd= Imsuraj
+
+
+
+TEMPLATE  html file change
+
+<form #templateForm = "ngForm" (ngSubmit)= "onSubmit(templateForm.values)">
+
+and ngModel in each form tag
+
+MODEL / REACTIVE
+html->
+alternate way is using FormBuilder.control and FormBuilder.group using constructor injection
+<form [formGroup]="form" (ngSubmit)= "onSubmit(templateForm.values)">
+and formControlName="form" in each form tag
+
+ts->
+class xyx implements onInit {
+
+form: FormGroup;
+this.form = new FormGroup({
+year: new FormControl('2022'),
+name: new FormControl('')
+});
+
+}
+
+validation of forms
+
+<button type= "submit"  [disabled]="!form.valid">save</button>
+
+class xyx implements onInit {
+
+form: FormGroup;
+this.form = new FormGroup({
+year: new FormControl('2022'),
+name: new FormControl('', Validators.compose([
+Validators.required,
+Validators.pattern('regex')
+])
+Add: new FormControl('', Validators.pattern('regex'))
+});
+
+}
+
+
+CUSTOM VALIDATION
+
+year: new FormControl('', this.yearValidatorMethod) //no (), it's a method name only
+
+
+yearValidatorMethod(control : FormControl){
+console.log(control.value);
+//other logic
+
+}
+
+
+ERROR HANDLING
+
+<div *ngIf>
+
+
+
+
+
+list html - [exportBtn]= "exportBtn"
+grid html - *ngIf ="exportBtn"
+
+grid -   @Input() exportBtn : boolean = true;
+
+list - 
+  exportBtn: boolean = true;
+  
+          case 'pending_signatures':
+          this.exportBtn = false;
+          break;
+		  
+		  
+		  
+		  
+		  npm install --no-package-lock
+
+npm cache clean --force
+
+rd /s /q 
